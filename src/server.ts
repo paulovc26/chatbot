@@ -1,20 +1,17 @@
-// Import the 'express' module
-import express from "express";
+import { create, Whatsapp } from "venom-bot";
 
-// Create an Express application
-const app = express();
+create({
+  session: "testezap", // You can customize the session name
+})
+  .then((client: Whatsapp) => start(client))
+  .catch((error) => console.log(error));
 
-// Set the port number for the server
-const port = 3000;
-
-// Define a route for the root path ('/')
-app.get("/", (req, res) => {
-  // Send a response to the client
-  res.send("Hello, TypeScript + Node.js + Express!");
-});
-
-// Start the server and listen on the specified port
-app.listen(port, () => {
-  // Log a message when the server is successfully running
-  console.log(`Server is running on http://localhost:${port}`);
-});
+function start(client: Whatsapp) {
+  client.onMessage((message) => {
+    if (message.body.toLowerCase() === "hello") {
+      client.sendText(message.from, "Hi there! How can I help you today?");
+    } else {
+      client.sendText(message.from, "Sorry, I did not understand that.");
+    }
+  });
+}
