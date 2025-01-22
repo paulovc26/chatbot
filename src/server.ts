@@ -1,4 +1,7 @@
+import express from "express";
 import { create, Whatsapp } from "venom-bot";
+
+const app = express();
 
 create({
   session: "testezap", // You can customize the session name
@@ -15,3 +18,7 @@ function start(client: Whatsapp) {
     }
   });
 }
+
+app.get("/", (req, res) => {
+  res.render("index");
+});
